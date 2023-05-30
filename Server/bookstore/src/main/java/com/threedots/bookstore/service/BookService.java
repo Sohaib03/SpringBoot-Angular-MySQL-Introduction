@@ -2,6 +2,7 @@ package com.threedots.bookstore.service;
 
 import com.threedots.bookstore.model.Book;
 import com.threedots.bookstore.repository.BookRepository;
+import com.threedots.bookstore.repository.BookShopRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -11,7 +12,6 @@ import java.util.List;
 @AllArgsConstructor
 public class BookService {
     private BookRepository bookRepository;
-
     public List<Book> getAllBooks() {
         return bookRepository.findAll();
     }
@@ -34,5 +34,10 @@ public class BookService {
 
     public void deleteAllBooks() {
         bookRepository.deleteAll();
+    }
+
+    public Book updateBook(Long id, Book newBook) {
+        bookRepository.updateBook(id, newBook.getTitle(), newBook.getAuthor(), newBook.getPrice(), newBook.getGenre(), newBook.getYearofPublication(), newBook.getPublisher());
+        return bookRepository.findById(id).orElse(null);
     }
 }

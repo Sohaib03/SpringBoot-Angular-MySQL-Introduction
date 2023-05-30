@@ -2,6 +2,7 @@ package com.threedots.bookstore.controller;
 
 import com.threedots.bookstore.model.Book;
 import com.threedots.bookstore.service.BookService;
+import com.threedots.bookstore.service.BookShopService;
 import lombok.AllArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
@@ -16,6 +17,7 @@ import java.util.List;
 @AllArgsConstructor
 public class BookController {
     private final BookService bookService;
+    private final BookShopService bookShopService;
 
     @GetMapping("")
     public List<Book> getAllBooks() {
@@ -29,14 +31,14 @@ public class BookController {
         return bookService.addNewBook(newBook);
     }
 
-    @GetMapping("/byTitle")
-    public List<Book> findBookByTitle(@RequestParam(value="title") String title) {
+    @GetMapping("/title/{title}")
+    public List<Book> findBookByTitle(@PathVariable String title) {
         System.out.println("Find title: " + title);
         return bookService.findBookByTitle(title);
     }
 
-    @GetMapping("/byId")
-    public Book findBookById(@RequestParam(value="id") Long id) {
+    @GetMapping("/{id}")
+    public Book findBookById(@RequestParam Long id) {
         System.out.println("Find id: " + id);
         Book book = bookService.findBookById(id);
         if (book == null) {
@@ -53,6 +55,7 @@ public class BookController {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Book with id " + id + " not found.");
             return;
         }
+        bookShopService.deleteBookByID(id);
         bookService.deleteBookById(id);
     }
 
@@ -70,14 +73,6 @@ public class BookController {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "Book with id " + id + " not found.");
             return null;
         }
-        book.setTitle(newBook.getTitle());
-        book.setPrice(newBook.getPrice());
-        book.setYearofPublication(newBook.getYearofPublication());
-        book.setAuthor(newBook.getAuthor());
-        book.setPublisher(newBook.getPublisher());
-        book.setGenre(newBook.getGenre());
-        List<Book> bookList = new ArrayList<>();
-        bookList.add(book);
-        return bookService.addNewBook(bookList).get(0);
+        return bookService.updateBook(id, newBook);
     }
 }

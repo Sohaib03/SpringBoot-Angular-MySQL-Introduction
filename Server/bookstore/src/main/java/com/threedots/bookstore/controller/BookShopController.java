@@ -45,7 +45,7 @@ public class BookShopController {
             response.sendError(HttpServletResponse.SC_NOT_FOUND, "BookShop with id " + id + " not found.");
             return null;
         }
-        bookShop.setShop_name(newBookShop.getShop_name());
+        bookShop.setShopName(newBookShop.getShopName());
         bookShop.setLocation(newBookShop.getLocation());
         bookShop.setContact_no(newBookShop.getContact_no());
         return addNewBookShop(bookShop);
@@ -70,11 +70,11 @@ public class BookShopController {
         bookShopService.deleteAllBookShops();
     }
 
-//    @GetMapping("{title}")
-//    public BookShop getBookShopByTitle(@PathVariable String title) {
-//        System.out.println("Get bookshop with title: " + title);
-//        return bookShopService.getBookShopByTitle(title);
-//    }
+    @GetMapping("/title/{title}")
+    public BookShop getBookShopByTitle(@PathVariable String title) {
+        System.out.println("Get bookshop with title: " + title);
+        return bookShopService.getBookShopByTitle(title);
+    }
 
     @GetMapping("/addBook")
     public BookShop addNewBookToBookShopById(@RequestParam(value="bookId") Long bookId, @RequestParam(value="bookShopId") Long bookShopId) {

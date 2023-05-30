@@ -34,10 +34,13 @@ public class BookShopService {
     public BookShop addNewBookToBookShopById(Long bookId, Long bookShopId) {
         BookShop bookShop = bookShopRepository.findById(bookShopId).orElse(null);
         Book book = bookRepository.findById(bookId).orElse(null);
+        System.out.println(bookShop);
+        System.out.println(book);
         if (bookShop != null && book != null) {
             bookShop.getBookList().add(book);
             return bookShopRepository.save(bookShop);
         }
+        System.out.println("BookShop or Book not found");
         return null;
     }
 
@@ -49,8 +52,17 @@ public class BookShopService {
         bookShopRepository.deleteAll();
     }
 
-
-//    public BookShop getBookShopByTitle(String title) {
-//        return bookShopRepository.findByTitleContainsIgnoreCase(title);
-//    }
+    public void deleteBookByID(Long bookId) {
+        // get all bookshops
+        // for each bookshop remove this bookid
+        // save bookshop
+        List<BookShop> bookShopList = bookShopRepository.findAll();
+        for (BookShop bookShop : bookShopList) {
+            bookShop.getBookList().removeIf(book -> book.getId().equals(bookId));
+            bookShopRepository.save(bookShop);
+        }
+    }
+    public BookShop getBookShopByTitle(String shopName) {
+        return bookShopRepository.findBookShopByShopNameIgnoreCase(shopName);
+    }
 }
