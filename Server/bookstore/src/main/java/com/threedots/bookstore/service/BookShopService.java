@@ -40,4 +40,17 @@ public class BookShopService {
         }
         return null;
     }
+
+    public void deleteBookShopById(Long id) {
+        bookShopRepository.deleteById(id);
+    }
+
+    public void deleteAllBookShops() {
+        bookShopRepository.deleteAll();
+    }
+
+
+//    public BookShop getBookShopByTitle(String title) {
+//        return bookShopRepository.findByTitleContainsIgnoreCase(title);
+//    }
 }

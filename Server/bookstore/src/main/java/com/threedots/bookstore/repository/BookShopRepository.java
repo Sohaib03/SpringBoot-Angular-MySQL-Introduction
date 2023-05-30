@@ -6,4 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface BookShopRepository extends JpaRepository<BookShop, Long> {
+//    BookShop findByTitleContainsIgnoreCase(String title);
 }
